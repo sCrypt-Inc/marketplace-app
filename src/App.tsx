@@ -1,26 +1,25 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+// App.tsx
+import React, { useState } from 'react';
+import ItemList from './ItemList';
+import NewItem from './NewItem';
 
-function App() {
+const App: React.FC = () => {
+  const [items, setItems] = useState<{id: string; name: string; price: number;}[]>([]);
+
+  const handleBuy = (id: string) => {
+    setItems(items.filter(item => item.id !== id));
+  };
+
+  const handleAdd = (newItem: { name: string; price: number }) => {
+    setItems([...items, { ...newItem, id: Math.random().toString() }]);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <NewItem onAdd={handleAdd} />
+      <ItemList items={items} onBuy={handleBuy} />
     </div>
   );
-}
+};
 
 export default App;
