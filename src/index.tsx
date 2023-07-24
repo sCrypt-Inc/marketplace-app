@@ -3,6 +3,18 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { Scrypt, bsv } from 'scrypt-ts';
+
+import { MarketplaceApp } from './contracts/marketplaceApp';
+import artifact from '../artifacts/marketplaceApp.json';
+
+MarketplaceApp.loadArtifact(artifact);
+
+Scrypt.init({
+  // https://docs.scrypt.io/advanced/how-to-integrate-scrypt-service#get-your-api-key
+  apiKey: process.env.REACT_APP_API_KEY || '',
+  network: bsv.Networks.testnet
+})
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement

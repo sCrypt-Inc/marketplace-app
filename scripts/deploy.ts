@@ -13,20 +13,16 @@ function getScriptHash(scriptPubKeyHex: string) {
 
 async function main() {
     await MarketplaceApp.compile()
-
+    
     // Prepare signer. 
     // See https://scrypt.io/docs/how-to-deploy-and-call-a-contract/#prepare-a-signer-and-provider
     const signer = new TestWallet(privateKey, new DefaultProvider({
         network: bsv.Networks.testnet
     }))
 
-    // TODO: Adjust the amount of satoshis locked in the smart contract:
-    const amount = 100
+    const amount = 1
 
-    const instance = new MarketplaceApp(
-        // TODO: Pass constructor parameter values.
-        0n
-    )
+    const instance = new MarketplaceApp()
 
     // Connect to a signer.
     await instance.connect(signer)
