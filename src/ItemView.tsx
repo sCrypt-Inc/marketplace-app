@@ -9,13 +9,16 @@ interface ItemProps {
 }
 
 const ItemView: React.FC<ItemProps> = ({ item, idx, onBuy }) => (
-  <Card sx={{ minWidth: 275, m: 2 }}>
+  <Card sx={{ minWidth: 275, m: 2}}>
     <CardContent>
       <Typography variant="h5" component="div">
         {Buffer.from(item.name, "hex").toString("utf8")}
       </Typography>
       <Typography variant="body2" color="text.secondary">
         Price: {Number(item.price) / (100 * 10**6)} BSV
+      </Typography>
+      <Typography variant="body2" color="text.secondary">
+        Seller: {item.sellerAddr}
       </Typography>
       <Button variant="contained" onClick={() => onBuy(idx)}>Buy</Button>
     </CardContent>

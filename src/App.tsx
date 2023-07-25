@@ -17,7 +17,6 @@ const App: React.FC = () => {
   const signerRef = useRef<SensiletSigner>();
 
   const [contractInstance, setContract] = useState<MarketplaceApp>();
-  const [error, setError] = React.useState("");
 
   useEffect(() => {
     const provider = new ScryptProvider();
@@ -51,7 +50,6 @@ const App: React.FC = () => {
       setContract(instance)
     } catch (error: any) {
       console.error("fetchContract error: ", error);
-      setError(error.message);
     }
   }
 
@@ -82,7 +80,6 @@ const App: React.FC = () => {
           console.log(`Add item call tx: ${result.tx.id}`);
         })
         .catch((e) => {
-          setError(e.message);
           console.error("Add item call error: ", e);
         });
     }
@@ -123,7 +120,7 @@ const App: React.FC = () => {
       }
 
       if (itemIdx === undefined) {
-        setError('All item slots are filled.')
+        console.error('All item slots are filled.')
         return
       }
 
@@ -143,7 +140,6 @@ const App: React.FC = () => {
           console.log(`Add item call tx: ${result.tx.id}`);
         })
         .catch((e) => {
-          setError(e.message);
           console.error("Add item call error: ", e);
         });
     }

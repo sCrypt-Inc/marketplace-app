@@ -15,7 +15,7 @@ const NewItem: React.FC<NewItemProps> = ({ onAdd }) => {
   };
 
   return (
-    <Box component="form" onSubmit={handleSubmit} sx={{ m: 2 }}>
+    <Box component="form" onSubmit={handleSubmit} sx={{ m: 2}}>
       <TextField
         id="name"
         label="Name"
