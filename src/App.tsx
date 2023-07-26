@@ -63,6 +63,11 @@ const App: React.FC = () => {
       }
 
       await contractInstance.connect(signer);
+      
+      // Create the next instance from the current.
+      const nextInstance = contractInstance.next() 
+      // Set empty slot for next instance.
+      nextInstance.items[idx].isEmptySlot = true
 
       // Bind custom contract call tx builder, that adds P2PKH output to pay
       // the sellers address.
@@ -73,7 +78,11 @@ const App: React.FC = () => {
         .buyItem(
           BigInt(idx),
           {
-            changeAddress: await signer.getDefaultAddress()
+            changeAddress: await signer.getDefaultAddress(),
+            next: {
+              instance: nextInstance,
+              balance: contractInstance.balance,
+            },
           } as MethodCallOptions<MarketplaceApp>
         )
         .then((result) => {

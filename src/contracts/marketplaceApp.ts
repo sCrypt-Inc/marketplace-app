@@ -12,7 +12,8 @@ import {
     Utils,
     MethodCallOptions,
     ContractTransaction,
-    bsv
+    bsv,
+    StatefulNext
 } from 'scrypt-ts'
 
 export type Item = {
@@ -73,14 +74,8 @@ export class MarketplaceApp extends SmartContract {
         options: MethodCallOptions<MarketplaceApp>,
         idx: bigint,
     ): Promise<ContractTransaction> {
-        // Get item.
         const item = current.items[Number(idx)]
-
-        // Create the next instance from the current.
-        const nextInstance = current.next();
-
-        // Set empty slot for next instance.
-        nextInstance.items[Number(idx)].isEmptySlot = true
+        const next = options.next as StatefulNext<MarketplaceApp>
 
         const unsignedTx: bsv.Transaction = new bsv.Transaction()
             // Add contract input.
@@ -88,8 +83,8 @@ export class MarketplaceApp extends SmartContract {
             // Build next instance output.
             .addOutput(
                 new bsv.Transaction.Output({
-                    script: nextInstance.lockingScript,
-                    satoshis: current.balance,
+                    script: next.instance.lockingScript,
+                    satoshis: next.balance,
                 })
             )
             // Add payment to seller output.
@@ -97,7 +92,7 @@ export class MarketplaceApp extends SmartContract {
             .addOutput(
                 new bsv.Transaction.Output({
                     script: bsv.Script.fromHex(
-                        Utils.buildPublicKeyHashScript(item.sellerAddr).toString()
+                        Utils.buildPublicKeyHashScript(item.sellerAddr)
                     ),
                     satoshis: Number(item.price),
                 })
@@ -115,9 +110,9 @@ export class MarketplaceApp extends SmartContract {
             atInputIndex: 0,
             nexts: [
                 {
-                    instance: nextInstance,
+                    instance: next.instance,
                     atOutputIndex: 0,
-                    balance: current.balance,
+                    balance: next.balance,
                 },
             ],
         })

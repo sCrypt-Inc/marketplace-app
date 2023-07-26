@@ -1,6 +1,7 @@
 import React from 'react';
 import { Button, Card, CardContent, Typography } from '@mui/material';
 import { Item } from './contracts/marketplaceApp';
+import { bsv } from 'scrypt-ts';
 
 interface ItemProps {
   item: Item
@@ -18,7 +19,7 @@ const ItemView: React.FC<ItemProps> = ({ item, idx, onBuy }) => (
         Price: {Number(item.price) / (100 * 10**6)} BSV
       </Typography>
       <Typography variant="body2" color="text.secondary">
-        Seller: {item.sellerAddr}
+        Seller: {bsv.Address.fromHex('6f' + item.sellerAddr).toString()}
       </Typography>
       <Button variant="contained" onClick={() => onBuy(idx)}>Buy</Button>
     </CardContent>
